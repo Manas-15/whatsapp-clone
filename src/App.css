@@ -1,13 +1,31 @@
-.app{
-  display:grid;
+.app {
+  display: grid;
   place-items: center;
-  background-color: #dadbd3;
   height: 100vh;
+  /* The teal band behind the top of the window, as on WhatsApp Web. */
+  background: linear-gradient(#00a884 0 130px, #dadbd3 130px 100%);
 }
-.app_body{
+.app_body {
   display: flex;
+  height: calc(100vh - 38px);
+  width: min(1600px, calc(100vw - 38px));
   background-color: #ededed;
-  height: 100vh;
-  width: 100vw;
-  box-shadow: -1px 4px 20px -6px rgba(0,0,0,1);
+  box-shadow: 0 6px 18px rgba(11, 20, 26, 0.08);
+  overflow: hidden;
+}
+
+.app--login {
+  background: #dadbd3;
+}
+
+/* Below the WhatsApp Web breakpoint the app goes full bleed. */
+@media (max-width: 1024px) {
+  .app {
+    background: #ededed;
+  }
+  .app_body {
+    height: 100vh;
+    width: 100vw;
+    box-shadow: none;
+  }
 }

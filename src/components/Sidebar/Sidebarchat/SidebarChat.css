@@ -1,28 +1,62 @@
-.sidebarChat{
+.sidebarChat_link {
+  text-decoration: none;
+  color: inherit;
+}
+.sidebarChat {
   display: flex;
-  padding: 20px;
+  align-items: center;
+  padding: 12px 15px;
   cursor: pointer;
-  border-bottom: 1px solid #f6f6f6;
+  border-bottom: 1px solid #f5f5f5;
 }
-.sidebarChat:hover{
-  background-color: #ebebeb;
+.sidebarChat:hover {
+  background-color: #f5f6f6;
 }
-a{
-  text-decoration: none!important;
-  color: black;
+.sidebarChat--active {
+  background-color: #f0f2f5;
 }
-.sidebarChat_info > h2{
-  font-size: 16px;
+.sidebarChat_info {
+  flex: 1;
+  min-width: 0;
+  margin-left: 15px;
+}
+.sidebarChat_topRow {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+}
+.sidebarChat_info > .sidebarChat_topRow > h2 {
   margin: 0;
+  font-size: 16px;
+  font-weight: 400;
+  color: #111b21;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
-.sidebarChat_info > p{
+.sidebarChat_time {
+  flex: none;
+  margin-left: 8px;
+  font-size: 12px;
+  color: #667781;
+}
+.sidebarChat_info > p {
+  margin: 2px 0 0;
   font-size: 14px;
-  margin: 0;
+  color: #667781;
+  /* Long previews must truncate instead of widening the sidebar. */
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
-.sidebarChat_info{
-  margin-left: 10px;
+.sidebarChat--new {
+  color: #111b21;
 }
-.sidebarChat> h2{
-  font-size: 16px;
-  margin: 0 30px;
+.sidebarChat--new > .MuiSvgIcon-root {
+  color: #54656f;
+}
+.sidebarChat--new > h2 {
+  margin: 0 0 0 15px;
+  font-size: 15px;
+  font-weight: 500;
 }

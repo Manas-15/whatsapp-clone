@@ -2,62 +2,69 @@ import React from 'react';
 import './App.css';
 import Sidebar from './components/Sidebar/sidebar';
 import Chat from './components/Chat/Chat';
-import {Switch,Route} from 'react-router-dom';
+import { Switch, Route, Redirect } from 'react-router-dom';
 import Login from './components/LogIn/Login';
-import {auth} from './components/Firebase/firebase.utils';
-import {connect} from "react-redux";
-import {setUser} from './components/Redux/user/user.action';
+import { auth } from './components/Firebase/firebase.utils';
+import { connect } from 'react-redux';
+import { setUser } from './components/Redux/user/user.action';
 import ProfileDetail from './components/Profile-detail/profile-detail';
 
-
 class App extends React.Component {
-  
-  
-  componentDidMount(){
-    const {setUser} = this.props;
-    auth.onAuthStateChanged(user =>{
-    setUser(user);
-      console.log(user);
-    })
-  };
+  componentDidMount() {
+    const { setUser } = this.props;
+    this.unsubscribeFromAuth = auth.onAuthStateChanged((user) => {
+      setUser(user);
+    });
+  }
 
- render() {
-  const {currentUser} = this.props;
+  componentWillUnmount() {
+    this.unsubscribeFromAuth?.();
+  }
 
-  return (
-    <div className='app'>
-      {!currentUser ? (
-        <Login />
-      ) : ( 
-      <div className='app_body'>
-      <Sidebar />
-        <Switch>
-          <Route path='/login'>
-              <Login />
-          </Route>
-          <Route 
-            path='/rooms/:roomId'>
+  render() {
+    const { currentUser } = this.props;
+
+    if (!currentUser) {
+      return (
+        <div className="app app--login">
+          <Login />
+        </div>
+      );
+    }
+
+    return (
+      <div className="app">
+        <div className="app_body">
+          <Sidebar />
+          <Switch>
+            {/* Already signed in — /login has nothing left to do. */}
+            <Route path="/login">
+              <Redirect to="/" />
+            </Route>
+            <Route path="/rooms/:roomId">
               <Chat />
-          </Route>
-          <Route exactpath='/'>
+            </Route>
+            <Route path="/profile-detail">
+              <ProfileDetail />
+            </Route>
+            {/* `exact path`, not `exactpath` — the old typo made this an
+                unknown prop and the route matched everything. */}
+            <Route exact path="/">
               <Chat />
-          </Route>
-          <Route path='/profile-detail'>
-            <ProfileDetail />
-          </Route>
-        </Switch>
-     </div> )
-      }  
-   </div>       
-  )}
+            </Route>
+          </Switch>
+        </div>
+      </div>
+    );
+  }
 }
 
 const mapStateToProps = (state) => ({
-  currentUser:state.user.currentUser
-})
-
-const mapDispatchToProps = (dispatch) => ({
-  setUser:user =>dispatch(setUser(user))
+  currentUser: state.user.currentUser,
 });
 
-export default connect(mapStateToProps,mapDispatchToProps)(App);
+const mapDispatchToProps = (dispatch) => ({
+  setUser: (user) => dispatch(setUser(user)),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(App);

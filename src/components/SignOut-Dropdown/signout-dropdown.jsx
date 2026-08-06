@@ -1,15 +1,26 @@
 import React from 'react';
 import './signout-dropdown.css';
-import {Button} from '@material-ui/core';
-import {auth} from '../Firebase/firebase.utils';
+import { auth } from '../Firebase/firebase.utils';
 
-const SignoutDropdown = () => {
+const SignoutDropdown = ({ onClose }) => {
   return (
-    <div className="dropdown">
-      <Button onClick ={() => auth.signOut()}>
-        Sign Out</Button>
-    </div>
-  )
-}
+    <>
+      {/* Click anywhere else to dismiss the menu. */}
+      <div className="dropdown_backdrop" onClick={onClose} />
+      <div className="dropdown">
+        <button
+          type="button"
+          className="dropdown_item"
+          onClick={() => {
+            onClose?.();
+            auth.signOut();
+          }}
+        >
+          Log out
+        </button>
+      </div>
+    </>
+  );
+};
 
 export default SignoutDropdown;

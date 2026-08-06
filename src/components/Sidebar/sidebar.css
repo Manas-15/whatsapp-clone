@@ -1,46 +1,83 @@
-.sidebar{
-flex: 0.35;
-}
-.sidebar_header{
+.sidebar {
+  /* WhatsApp Web keeps the chat list around 30% of the window, but bounded so
+     it never collapses to a sliver on wide screens. */
+  position: relative;
+  flex: 0 0 30%;
+  min-width: 300px;
+  max-width: 420px;
   display: flex;
+  flex-direction: column;
+  background-color: #ffffff;
+  border-right: 1px solid #dadada;
+  overflow: hidden;
+}
+.sidebar_header {
+  position: relative;
+  display: flex;
+  align-items: center;
   justify-content: space-between;
-  padding: 20px;
-  border-right: 1.5px solid lightgray;
+  height: 60px;
+  padding: 0 16px;
+  background-color: #ededed;
+  flex: none;
+}
+.sidebar_header .MuiAvatar-root {
   cursor: pointer;
 }
-.sidebar_headerRight{
+.sidebar_headerRight {
   display: flex;
   align-items: center;
 }
-.sidebar_headerRight > .MuiSvgIcon-root{
-  margin-right: 2vw;
-  font-size: 24px !important;
+.sidebar_headerRight .MuiSvgIcon-root {
+  color: #54656f;
+  font-size: 24px;
 }
-.sidebar_search{
+.sidebar_search {
   display: flex;
   align-items: center;
   background-color: #f6f6f6;
-  height: 39px;
-  padding: 5px;
+  padding: 7px 12px;
+  border-bottom: 1px solid #f0f0f0;
+  flex: none;
 }
-.sidebar_searchContainer{
-display: flex;
-align-items: center;
-background-color: white;
-width: 100%;
-height: 35px;
-border-radius: 15px;
+.sidebar_searchContainer {
+  display: flex;
+  align-items: center;
+  background-color: #ffffff;
+  width: 100%;
+  height: 35px;
+  border-radius: 8px;
 }
-.sidebar_searchContainer > input{
-  border: none;
-}
-.sidebar_searchContainer > .MuiSvgIcon-root{
-  color: grey;
-  padding: 10px;
-}
-.sidebar_chats{
+.sidebar_searchContainer > input {
   flex: 1;
-  background-color: White;
-  overflow: scroll;
-  overflow: hidden;
+  min-width: 0;
+  border: none;
+  outline: none;
+  font-size: 14px;
+  font-family: inherit;
+  color: #111b21;
+  background: transparent;
+}
+.sidebar_searchContainer > input::placeholder {
+  color: #8696a0;
+}
+.sidebar_searchContainer > .MuiSvgIcon-root {
+  color: #8696a0;
+  font-size: 20px;
+  padding: 0 12px;
+}
+.sidebar_chats {
+  flex: 1;
+  min-height: 0;
+  background-color: #ffffff;
+  /* The old rule set `overflow: scroll` then immediately `overflow: hidden`,
+     so the chat list could never be scrolled. */
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+.sidebar_empty {
+  padding: 30px 20px;
+  text-align: center;
+  font-size: 14px;
+  color: #667781;
 }

@@ -1,80 +1,82 @@
-.profile{
-  top: 75px;
-  left: 0;
-  transition: all 0.5s ease;
-  position: absolute;
-  display: flex;
-  width: 100%;
-  height: 90%;
-}
-.profileA{
-  z-index: 5;
-  flex: 25%;
-  height: 100%;
-  background-color: #d0cfcf;
+/* Rendered as an overlay inside .sidebar (which is position: relative), so it
+   tracks the sidebar's width instead of the old hard-coded 25vw guess. */
+.profile {
   position: absolute;
   top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 10;
   display: flex;
   flex-direction: column;
-  overflow: hidden;
+  background-color: #ffffff;
+  animation: profile-slide-in 0.18s ease-out;
 }
 
-.profile-header{
+@keyframes profile-slide-in {
+  from {
+    transform: translateX(-100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+.profile_header {
+  display: flex;
   align-items: center;
-  padding: 10px 0 0 30px;
-}
-.profile-body{
-  position: relative;
-  display: flex;
-  flex: 1;
-  flex-direction: column;
-  overflow-x: hidden;
-  overflow-y: hidden;
-}
-.profile-image{
-  cursor: pointer;
-  margin-bottom: 10px;
-  display: flex;
+  height: 60px;
+  padding: 0 16px;
+  background-color: #ededed;
   flex: none;
+}
+.profile_header > h3 {
+  margin: 0 0 0 12px;
+  font-size: 17px;
+  font-weight: 500;
+  color: #111b21;
+}
+.profile_header .MuiSvgIcon-root {
+  color: #54656f;
+}
+
+.profile_body {
+  flex: 1;
+  overflow-y: auto;
+  background-color: #f0f2f5;
+}
+.profile_image {
+  display: flex;
   justify-content: center;
-  }
-.profile-image > .MuiAvatar-root{
-  animation:cubic-bezier(.1,.82,.25,1);
-    background-repeat: no-repeat;
-    background-position: 50%;
-    background-size: contain;
-    border-radius: 50%;
-    transform: translateZ(0);
-    cursor: pointer;
-    width: 200px;
-    height: 200px;
-    overflow: hidden;
-    position: relative;
-    visibility: visible;
-  }
-  .name{
-    padding: 10px 0 0 25px;
-    position: relative;
-    flex: none;
-  }
-  .naming{
-    color: rgb(24, 138, 2);
-    margin-bottom: 10px;
-  }
-  .naming > h5{
-    margin: 0;
-  }
-  .name-detail{
-    cursor: text;
-    margin-left: 5px;
-    font-size: 19px;
-    position: relative;
-    display: flex;
-    border-bottom: 1px solid gray;
-  }
-  .name > p{
-    margin: 4px 20px 28px 10px;
-    font-size: 16px;
-    line-height: 20px;
-    color: rgb(68, 67, 67);
-  }
+  padding: 28px 0;
+  background-color: #ffffff;
+}
+.profile_image > .MuiAvatar-root {
+  width: 200px;
+  height: 200px;
+}
+
+.profile_field {
+  padding: 14px 30px 20px;
+  margin-top: 10px;
+  background-color: #ffffff;
+}
+.profile_field > h5 {
+  margin: 0 0 12px;
+  font-size: 14px;
+  font-weight: 400;
+  color: #008069;
+}
+.profile_value {
+  padding-bottom: 8px;
+  font-size: 17px;
+  color: #111b21;
+  border-bottom: 1px solid #e9edef;
+  word-break: break-word;
+}
+.profile_field > p {
+  margin: 12px 0 0;
+  font-size: 14px;
+  line-height: 20px;
+  color: #667781;
+}
