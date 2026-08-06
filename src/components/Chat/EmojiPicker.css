@@ -1,0 +1,70 @@
+/* Anchored above the emoji button, which is the positioned parent. */
+.emojiPicker {
+  position: absolute;
+  bottom: calc(100% + 10px);
+  left: 0;
+  z-index: 30;
+  width: 352px;
+  background-color: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(11, 20, 26, 0.26), 0 4px 20px rgba(11, 20, 26, 0.16);
+  overflow: hidden;
+}
+
+.emojiPicker_tabs {
+  display: flex;
+  background-color: #f0f2f5;
+  border-bottom: 1px solid #e9edef;
+}
+.emojiPicker_tab {
+  flex: 1;
+  padding: 8px 0 6px;
+  font-size: 18px;
+  line-height: 1;
+  background: none;
+  border: none;
+  border-bottom: 3px solid transparent;
+  cursor: pointer;
+  opacity: 0.55;
+  transition: opacity 0.12s ease;
+}
+.emojiPicker_tab:hover {
+  opacity: 1;
+}
+.emojiPicker_tab--active {
+  opacity: 1;
+  background-color: #ffffff;
+  border-bottom-color: #00a884;
+}
+
+.emojiPicker_label {
+  margin: 0;
+  padding: 8px 12px 4px;
+  font-size: 12px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  color: #8696a0;
+}
+
+.emojiPicker_grid {
+  display: grid;
+  grid-template-columns: repeat(8, 1fr);
+  gap: 2px;
+  padding: 4px 8px 10px;
+  max-height: 216px;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+.emojiPicker_emoji {
+  padding: 6px 0;
+  font-size: 23px;
+  line-height: 1.15;
+  background: none;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+.emojiPicker_emoji:hover {
+  background-color: #f0f2f5;
+}

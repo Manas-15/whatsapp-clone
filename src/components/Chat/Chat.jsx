@@ -10,13 +10,17 @@ import firebase, { firestore } from '../Firebase/firebase.utils';
 import { connect } from 'react-redux';
 import { avatarUrl } from '../../utils/avatar';
 import { formatMessageTime, formatLastSeen } from '../../utils/time';
+import EmojiPicker from './EmojiPicker';
 
 const Chat = ({ currentUser }) => {
   const [input, setInput] = useState('');
   const { roomId } = useParams();
   const [roomName, setRoomName] = useState('');
   const [messages, setMessages] = useState([]);
+  const [showEmojiPicker, setShowEmojiPicker] = useState(false);
   const endOfMessagesRef = useRef(null);
+  const inputRef = useRef(null);
+  const emojiRef = useRef(null);
 
   useEffect(() => {
     if (!roomId) {
@@ -49,6 +53,41 @@ const Chat = ({ currentUser }) => {
   useEffect(() => {
     endOfMessagesRef.current?.scrollIntoView({ block: 'end' });
   }, [messages]);
+
+  // Dismiss the picker on an outside click or Escape.
+  useEffect(() => {
+    if (!showEmojiPicker) return undefined;
+
+    const onPointerDown = (event) => {
+      if (!emojiRef.current?.contains(event.target)) setShowEmojiPicker(false);
+    };
+    const onKeyDown = (event) => {
+      if (event.key === 'Escape') setShowEmojiPicker(false);
+    };
+
+    document.addEventListener('mousedown', onPointerDown);
+    document.addEventListener('keydown', onKeyDown);
+    return () => {
+      document.removeEventListener('mousedown', onPointerDown);
+      document.removeEventListener('keydown', onKeyDown);
+    };
+  }, [showEmojiPicker]);
+
+  // Splice the emoji in at the caret rather than appending, and leave the caret
+  // just after it so typing continues where you'd expect.
+  const insertEmoji = (emoji) => {
+    const field = inputRef.current;
+    const start = field?.selectionStart ?? input.length;
+    const end = field?.selectionEnd ?? input.length;
+
+    setInput(input.slice(0, start) + emoji + input.slice(end));
+
+    const caret = start + emoji.length;
+    window.requestAnimationFrame(() => {
+      field?.focus();
+      field?.setSelectionRange(caret, caret);
+    });
+  };
 
   const sendMessage = (event) => {
     event.preventDefault();
@@ -124,11 +163,20 @@ const Chat = ({ currentUser }) => {
       </div>
 
       <div className="chat_footer">
-        <IconButton>
-          <InsertEmoticonIcon />
-        </IconButton>
+        <div className="chat_emoji" ref={emojiRef}>
+          {showEmojiPicker && <EmojiPicker onSelect={insertEmoji} />}
+          <IconButton
+            aria-label="Choose an emoji"
+            aria-expanded={showEmojiPicker}
+            className={showEmojiPicker ? 'chat_emojiButton--open' : ''}
+            onClick={() => setShowEmojiPicker((open) => !open)}
+          >
+            <InsertEmoticonIcon />
+          </IconButton>
+        </div>
         <form onSubmit={sendMessage}>
           <input
+            ref={inputRef}
             type="text"
             value={input}
             onChange={(e) => setInput(e.target.value)}

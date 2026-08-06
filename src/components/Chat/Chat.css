@@ -141,6 +141,14 @@
 .chat_footer .MuiSvgIcon-root {
   color: #54656f;
 }
+/* Positioning context for the emoji picker popover. */
+.chat_emoji {
+  position: relative;
+  flex: none;
+}
+.chat_emojiButton--open .MuiSvgIcon-root {
+  color: #00a884;
+}
 .chat_footer > form {
   flex: 1;
   display: flex;
