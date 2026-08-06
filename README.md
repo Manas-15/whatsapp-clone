@@ -9,13 +9,13 @@ messaging, and the familiar two-pane layout.
 
 ## Screenshots
 
-### Chat
-
-![Chat view](screenshots/chat.png)
-
 ### Sign in
 
 ![Sign in screen](screenshots/login.png)
+
+### Chat
+
+![Chat view](screenshots/chat.png)
 
 ---
 
