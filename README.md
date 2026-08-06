@@ -1,70 +1,121 @@
-# Getting Started with Create React App
+# WhatsApp Clone
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+A WhatsApp Web clone built with React and Firebase — Google sign-in, real-time
+messaging, and the familiar two-pane layout.
 
-## Available Scripts
+**Live demo → [whatsapp-clone-iac.vercel.app](https://whatsapp-clone-iac.vercel.app/)**
 
-In the project directory, you can run:
+---
 
-### `npm start`
+## Screenshots
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+### Chat
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+![Chat view](screenshots/chat.png)
 
-### `npm test`
+### Sign in
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+![Sign in screen](screenshots/login.png)
 
-### `npm run build`
+---
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+## Features
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+- **Google sign-in** through Firebase Authentication
+- **Real-time messaging** — messages stream in over Firestore `onSnapshot`, no refresh needed
+- **Create chat rooms** from the sidebar
+- **Search** to filter the chat list by name
+- **Emoji picker** with eight categories that inserts at the cursor position
+- **Profile panel** showing your name, email, and avatar
+- **Stays signed in** across reloads — Firebase Auth restores the session
+- **Responsive layout** that goes full-bleed below 1024px
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+## Tech stack
 
-### `npm run eject`
+| | |
+|---|---|
+| UI | React 17, Material-UI 4 |
+| State | Redux |
+| Routing | React Router 5 |
+| Backend | Firebase 8 — Authentication + Cloud Firestore |
+| Tooling | Create React App 4 |
+| Hosting | Vercel |
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+## Getting started
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+**Requires Node 17 or newer.** The `start` and `build` scripts pass
+`--openssl-legacy-provider`, a flag that doesn't exist on older versions — on
+Node 16 or below, npm will fail immediately with an invalid-option error.
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+```bash
+git clone https://github.com/Manas-15/whatsapp-clone.git
+cd whatsapp-clone
+npm install
+npm start
+```
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+The app runs at [http://localhost:3000](http://localhost:3000).
 
-## Learn More
+### Firebase setup
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+The project ships with a working Firebase config in
+[`src/components/Firebase/firebase.utils.js`](src/components/Firebase/firebase.utils.js).
+To point it at your own project, replace the `config` object with the settings
+from your Firebase console, then:
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+1. Enable **Google** under *Authentication → Sign-in method*
+2. Create a **Cloud Firestore** database
+3. Add your domain under *Authentication → Settings → Authorized domains*
 
-### Code Splitting
+Firestore uses a single `rooms` collection, each room holding a `messages`
+subcollection:
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+```
+rooms/{roomId}
+  name: string
+  messages/{messageId}
+    message:   string
+    name:      string     // sender's display name
+    timestamp: serverTimestamp
+```
 
-### Analyzing the Bundle Size
+> **A note on the API key.** A Firebase web API key is a public identifier, not
+> a secret, so committing it is expected. It does mean your
+> [Firestore security rules](https://firebase.google.com/docs/firestore/security/get-started)
+> are the only thing guarding your data — worth reviewing before sharing the
+> project widely.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+## Available scripts
 
-### Making a Progressive Web App
+| Command | What it does |
+|---|---|
+| `npm start` | Dev server with hot reload |
+| `npm run build` | Production bundle in `build/` |
+| `npm test` | Test runner in watch mode |
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+## Project structure
 
-### Advanced Configuration
+```
+src/
+├── components/
+│   ├── Chat/              Message pane, bubbles, emoji picker
+│   ├── Sidebar/           Chat list, search, Sidebarchat/ rows
+│   ├── LogIn/             Google sign-in screen
+│   ├── Profile-detail/    Profile overlay
+│   ├── SignOut-Dropdown/  Header overflow menu
+│   ├── Firebase/          Firebase init, auth, Firestore exports
+│   └── Redux/             Store, reducers, user actions
+└── utils/
+    ├── avatar.js          DiceBear avatar URLs, seeded per room
+    └── time.js            Timestamp formatting
+```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+## Deployment
 
-### Deployment
+Deployed on Vercel with Create React App's defaults — build command
+`npm run build`, output directory `build`. Pushing to `master` triggers a new
+deployment.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+---
 
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+Built by [Manas Pasayat](https://github.com/Manas-15).
