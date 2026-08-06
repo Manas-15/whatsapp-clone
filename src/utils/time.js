@@ -5,8 +5,10 @@ const toDate = (timestamp) => {
   return date instanceof Date && !Number.isNaN(date.getTime()) ? date : null;
 };
 
+// 'numeric' hour drops the padding zero, so en-US reads "4:39 PM" rather than
+// "04:39 PM"; 24-hour locales still render "16:39".
 const timeOfDay = (date) =>
-  date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+  date.toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' });
 
 const isSameDay = (a, b) =>
   a.getFullYear() === b.getFullYear() &&

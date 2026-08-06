@@ -1,14 +1,21 @@
 .app {
-  display: grid;
-  place-items: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   height: 100vh;
+  /* Inset via padding rather than sizing the child off 100vw/100vh: those
+     units include the scrollbar gutter, which produced a stray scrollbar and
+     clipped the bottom edge. */
+  padding: 19px;
+  overflow: hidden;
   /* The teal band behind the top of the window, as on WhatsApp Web. */
   background: linear-gradient(#00a884 0 130px, #dadbd3 130px 100%);
 }
 .app_body {
   display: flex;
-  height: calc(100vh - 38px);
-  width: min(1600px, calc(100vw - 38px));
+  flex: 1;
+  height: 100%;
+  max-width: 1600px;
   background-color: #ededed;
   box-shadow: 0 6px 18px rgba(11, 20, 26, 0.08);
   overflow: hidden;
@@ -21,11 +28,11 @@
 /* Below the WhatsApp Web breakpoint the app goes full bleed. */
 @media (max-width: 1024px) {
   .app {
+    padding: 0;
     background: #ededed;
   }
   .app_body {
-    height: 100vh;
-    width: 100vw;
+    max-width: none;
     box-shadow: none;
   }
 }

@@ -66,7 +66,14 @@
   max-width: 65%;
   width: fit-content;
   margin-bottom: 12px;
-  padding: 6px 55px 8px 9px;
+  padding: 6px 9px 7px;
+  /* Text and timestamp are flex siblings rather than the timestamp being
+     absolutely positioned over a fixed padding reserve — a reserve wide enough
+     for "09:28" is too narrow for "04:39 PM" and the two collided. */
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: flex-start;
   font-size: 14.2px;
   line-height: 19px;
   color: #111b21;
@@ -74,8 +81,6 @@
   border-radius: 7.5px;
   border-top-left-radius: 0;
   box-shadow: 0 1px 0.5px rgba(11, 20, 26, 0.13);
-  word-wrap: break-word;
-  overflow-wrap: anywhere;
 }
 .chat_message--own {
   align-self: flex-end;
@@ -100,20 +105,27 @@
   clip-path: polygon(0 0, 0 100%, 100% 0);
 }
 .chat_name {
-  display: block;
+  /* Own row above the message body. */
+  flex: 0 0 100%;
   margin-bottom: 2px;
   font-size: 12.8px;
   font-weight: 500;
   color: #1f7aec;
 }
 .chat_text {
+  flex: 0 1 auto;
+  min-width: 0;
   white-space: pre-wrap;
+  overflow-wrap: anywhere;
 }
 .chat_timeStamp {
-  position: absolute;
-  right: 9px;
-  bottom: 4px;
+  flex: none;
+  /* Pushed to the bubble's right edge, so a short message still sits left
+     under the sender name instead of being dragged across. */
+  margin-left: auto;
+  padding-left: 8px;
   font-size: 11px;
+  line-height: 15px;
   color: #667781;
 }
 
